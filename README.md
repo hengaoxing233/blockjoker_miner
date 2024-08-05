@@ -1,4 +1,4 @@
-# blockjoker_miner
+# 大陆IP需要全局代理
 
 ## url
 ### https://test.blockjoker.org/home
