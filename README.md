@@ -1,7 +1,7 @@
 # blockjoker_miner
 
-## cargo build --release
+## release
+### cargo build --release
 
-# run
-
-## ./joker token therad_num
+## run
+### ./joker token therad_num
