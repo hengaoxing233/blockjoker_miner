@@ -1,4 +1,5 @@
 # 大陆IP需要全局代理
+# 同一个账号只能开一个软件
 
 ## url
 ### https://test.blockjoker.org/home
