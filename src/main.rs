@@ -41,59 +41,67 @@ fn create_shared_client() -> Arc<reqwest::blocking::Client> {
 }
 fn fetch_records(token: String, session: Arc<RwLock<String>>) {
     let client = create_shared_client();
-    let current_session = session.read().unwrap().clone();
-    let random_num: IpAddr = generate_random_ip();
-    let res = client.get("https://test2.blockjoker.org/api/v1/missions/records")
-        .header("Accept", "application/json, text/plain, */*")
-        .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-        .header("Authorization", format!("Bearer {token}"))
-        .header("Referer", "https://test2.blockjoker.org/home")
-        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0")
-        .header("Host", "test2.blockjoker.org")
-        .header("Origin", "test2.blockjoker.org")
-        .header("Connection", "Keep-Alive")
-        .header("Cookie",current_session.to_string())
-        .header("Client-Ip", &random_num.to_string())
-        .header("X-Forwarded-For", &random_num.to_string())
-        .header("Remote_Addr", &random_num.to_string())
-        .send();
-    match res {
-        Ok(response) => {
-            update_session(&session, &response);
-            if let Ok(json) = response.json::<Value>() {
-                println!("最后一条奖励：{}",json["result"][0]);
-            }
-        },
-        Err(e) => println!("查询最后一条奖励失败: {:?}", e),
+    loop {
+        let current_session = session.read().unwrap().clone();
+        let random_num: IpAddr = generate_random_ip();
+        let res = client.get("https://test2.blockjoker.org/api/v1/missions/records")
+            .header("Accept", "application/json, text/plain, */*")
+            .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+            .header("Authorization", format!("Bearer {token}"))
+            .header("Referer", "https://test2.blockjoker.org/home")
+            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0")
+            .header("Host", "test2.blockjoker.org")
+            .header("Origin", "test2.blockjoker.org")
+            .header("Connection", "Keep-Alive")
+            .header("Cookie",current_session.to_string())
+            .header("Client-Ip", &random_num.to_string())
+            .header("X-Forwarded-For", &random_num.to_string())
+            .header("Remote_Addr", &random_num.to_string())
+            .send();
+        match res {
+            Ok(response) => {
+                // update_session(&session, &response);
+                if let Ok(json) = response.json::<Value>() {
+                    println!("最后一条奖励：{}",json["result"][0]);
+                }
+            },
+            Err(e) => println!("查询最后一条奖励失败: {:?}", e),
+        }
+        thread::sleep(Duration::from_secs(30));
     }
 }
 fn fetch_point(token: String, session: Arc<RwLock<String>>) {
     let client = create_shared_client();
-    let current_session = session.read().unwrap().clone();
-    let random_num: IpAddr = generate_random_ip();
-    let res = client.get("https://test2.blockjoker.org/api/v1/accounts")
-        .header("Accept", "application/json, text/plain, */*")
-        .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
-        .header("Authorization", format!("Bearer {token}"))
-        .header("Referer", "https://test2.blockjoker.org/home")
-        .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0")
-        .header("Host", "test2.blockjoker.org")
-        .header("Origin", "test2.blockjoker.org")
-        .header("Connection", "Keep-Alive")
-        .header("Cookie",current_session.to_string())
-        .header("Client-Ip", &random_num.to_string())
-        .header("X-Forwarded-For", &random_num.to_string())
-        .header("Remote_Addr", &random_num.to_string())
-        .send();
-    match res {
-        Ok(response) => {
-            update_session(&session, &response);
-            if let Ok(json) = response.json::<Value>() {
-                println!("当前积分：{}",json["result"]["point"]);
-            }
-        },
-        Err(e) => println!("查询积分失败: {:?}", e),
+    loop {
+        let current_session = session.read().unwrap().clone();
+        let random_num: IpAddr = generate_random_ip();
+        let res = client.get("https://test2.blockjoker.org/api/v1/accounts")
+            .header("Accept", "application/json, text/plain, */*")
+            .header("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8")
+            .header("Authorization", format!("Bearer {token}"))
+            .header("Referer", "https://test2.blockjoker.org/home")
+            .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36 Edg/127.0.0.0")
+            .header("Host", "test2.blockjoker.org")
+            .header("Origin", "test2.blockjoker.org")
+            .header("Connection", "Keep-Alive")
+            .header("Cookie",current_session.to_string())
+            .header("Client-Ip", &random_num.to_string())
+            .header("X-Forwarded-For", &random_num.to_string())
+            .header("Remote_Addr", &random_num.to_string())
+            .send();
+        match res {
+            Ok(response) => {
+                // update_session(&session, &response);
+                if let Ok(json) = response.json::<Value>() {
+                    println!("当前积分：{}",json["result"]["point"]);
+                }
+            },
+            Err(e) => println!("查询积分失败: {:?}", e),
+        }
+
+        thread::sleep(Duration::from_secs(30));
     }
+
 }
 fn fetch_salt(salt: Arc<RwLock<String>>, token: String, session: Arc<RwLock<String>>) {
     let client = create_shared_client();
@@ -235,12 +243,13 @@ fn generate(salt: Arc<RwLock<String>>, found: Arc<AtomicBool>, token: String, se
                                             if let Some(new_salt) = json["result"].as_str() {
                                                 println!("<<<<<<成功提交哈希!>>>>>>");
                                                 println!("读取到新salt: {}", new_salt);
-                                                let token_clone= token.clone();
-                                                let session_clone= session.clone();
-                                                fetch_point(token_clone, session_clone);
-                                                let token_clone= token.clone();
-                                                let session_clone= session.clone();
-                                                fetch_records(token_clone, session_clone);
+                                                thread::sleep(Duration::from_secs(1));
+                                                // let token_clone= token.clone();
+                                                // let session_clone= session.clone();
+                                                // fetch_point(token_clone, session_clone);
+                                                // let token_clone= token.clone();
+                                                // let session_clone= session.clone();
+                                                // fetch_records(token_clone, session_clone);
                                                 let mut salt_writer = salt.write().unwrap();
                                                 *salt_writer = new_salt.to_string();
                                             }
@@ -304,17 +313,17 @@ async fn main() {
     });
 
 
-    // let token_clone = token.clone();
-    // let session_clone = session.clone();
-    // thread::spawn(move || {
-    //     fetch_point(token_clone, session_clone);
-    // });
-    //
-    // let token_clone = token.clone();
-    // let session_clone = session.clone();
-    // thread::spawn(move || {
-    //     fetch_records(token_clone, session_clone);
-    // });
+    let token_clone = token.clone();
+    let session_clone = session.clone();
+    thread::spawn(move || {
+        fetch_point(token_clone, session_clone);
+    });
+
+    let token_clone = token.clone();
+    let session_clone = session.clone();
+    thread::spawn(move || {
+        fetch_records(token_clone, session_clone);
+    });
 
     println!("开始计算...");
     let mut handles = vec![];
