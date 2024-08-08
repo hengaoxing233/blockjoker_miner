@@ -2,7 +2,7 @@
 # 同一个账号只能开一个软件
 # 官方发布了V2版本，每5分钟更新一次积分，每5分钟积分上限6分
 ## url
-### [https://test.blockjoker.org/home](https://test2.blockjoker.org/home)
+### [https://test2.blockjoker.org/home](https://test2.blockjoker.org/home)
 
 ## release
 ### ```cargo build --release```
